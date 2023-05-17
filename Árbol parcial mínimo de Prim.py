@@ -1,16 +1,9 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May 16 18:17:00 2023
-
-@author: sergi
-"""
-
 import networkx as nx
 import matplotlib.pyplot as plt
 from heapq import heappop, heappush
 
 def prim(graph):
-    # Inicializar el árbol parcial y el conjunto de nodos visitados
+    # Inicializar el árbol parcial mínimo y el conjunto de nodos visitados
     minimum_spanning_tree = nx.Graph()
     visited = set()
     
@@ -18,14 +11,15 @@ def prim(graph):
     start_node = list(graph.keys())[0]
     
     # Utilizar una cola de prioridad (heap) para seleccionar las aristas de menor peso
+    # Inicialmente, agregar las aristas del nodo inicial a la cola de prioridad
     heap = [(weight, start_node, neighbor) for neighbor, weight in graph[start_node].items()]
     visited.add(start_node)
     
     while heap:
-        # Obtener la arista de menor peso
+        # Obtener la arista de menor peso de la cola de prioridad
         weight, node1, node2 = heappop(heap)
         
-        # Si el otro nodo no ha sido visitado, agregar la arista al árbol parcial
+        # Si el otro nodo de la arista no ha sido visitado, agregar la arista al árbol parcial mínimo
         if node2 not in visited:
             visited.add(node2)
             minimum_spanning_tree.add_edge(node1, node2, weight=weight)
@@ -46,6 +40,7 @@ graph = {
     'E': {'B': 1, 'C': 3, 'D': 2}
 }
 
+# Obtener el árbol parcial mínimo utilizando el algoritmo de Prim
 minimum_spanning_tree = prim(graph)
 
 # Graficar el árbol parcial mínimo
@@ -59,3 +54,4 @@ nx.draw_networkx_edge_labels(minimum_spanning_tree, pos, edge_labels=edge_labels
 # Mostrar el árbol parcial mínimo
 plt.axis('off')
 plt.show()
+
